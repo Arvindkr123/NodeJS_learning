@@ -1,13 +1,12 @@
-const { readFile, writeFile } = require("fs").promises;
+const http = require("http");
 
-const start = async () => {
-  try {
-    const first = await readFile("./content/first.txt", "utf-8");
-    await writeFile("./content/five.txt", `${first.toUpperCase()}`);
-    const five = await readFile("./content/five.txt", "utf-8");
-    console.log(first, five);
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-start();
+// Using Event Emitter API
+const server = http.createServer();
+
+server.on("request", (req, res) => {
+  res.end("welcome");
+});
+
+server.listen(4000, () => {
+  console.log("Server listening on port : 4000");
+});
