@@ -36,6 +36,29 @@ app.get("/api/products/:productId", (req, res) => {
   return res.json(singleData);
 });
 
+app.get("/api/products/:productId/reviews/:reviewId", (req, res) => {
+  console.log(req.params);
+  res.send("<h1>Hello World!!!</h1>");
+});
+
+app.get("/api/v1/query", (req, res) => {
+  const { search, limit } = req.query;
+  // console.log(req.query);
+  console.log(search, limit);
+  let sortedProducts = [...products];
+  if (search) {
+    sortedProducts = sortedProducts.filter((p) => p.name.startsWith(search));
+  }
+  if (limit) {
+    sortedProducts = sortedProducts.slice(0, Number(limit));
+  }
+  if (sortedProducts.length < 1) {
+    // res.status(200).json("no products match your search....");
+    res.status(200).json({ success: true, data: [] });
+  }
+  res.status(200).json(sortedProducts);
+});
+
 app.listen(5000, () => {
   console.log(`Server listening on port ${5000}`);
 });
