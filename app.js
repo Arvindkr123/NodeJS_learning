@@ -1,19 +1,22 @@
 const express = require("express");
-const app = express();
 const path = require("path");
+const { products } = require("./data");
 
-app.use(express.static("./express-tutorial/navbar-app"));
+const app = express();
 
 app.get("/", (req, res) => {
-  res.sendFile(
-    path.resolve(__dirname, "./express-tutorial/navbar-app/index.html")
-  );
+  res.send(`<h1>Home Page</h1><a href="/api/products">products</a>`);
+  // res.json(products);
 });
 
-app.all("*", (req, res) => {
-  res.status(404).send("resource not found!");
+app.get("/api/products", (req, res) => {
+  const newProducts = products.map((p) => {
+    const { id, name, image } = p;
+    return { id, name, image };
+  });
+  res.json(newProducts);
 });
 
 app.listen(5000, () => {
-  console.log("server listening on port " + 5000);
+  console.log(`Server listening on port ${5000}`);
 });
