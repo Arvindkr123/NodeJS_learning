@@ -30,7 +30,10 @@ app.get("/api/products/:productId", (req, res) => {
   // log(req.params);
   const { productId } = req.params;
   const singleData = products.find((p) => p.id === +productId);
-  res.json(singleData);
+  if (!singleData) {
+    return res.status(404).send("Product does not exist");
+  }
+  return res.json(singleData);
 });
 
 app.listen(5000, () => {
