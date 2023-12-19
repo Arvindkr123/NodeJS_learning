@@ -1,10 +1,12 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const morgan = require("morgan");
 const logger = require("./middle-ware/logger");
 const authrize = require("./middle-ware/authrize");
 // app.use('/api',logger);
-app.use([logger, authrize]);
+// app.use([logger, authrize]);
+app.use(morgan("tiny"));
 
 app.get("/", (req, res) => {
   res.send("Welcome to Home page!");
