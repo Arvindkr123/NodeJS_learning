@@ -1,23 +1,24 @@
 const express = require("express");
-const path = require("path");
 const app = express();
-const morgan = require("morgan");
-const logger = require("./middle-ware/logger");
-const authrize = require("./middle-ware/authrize");
-// app.use('/api',logger);
-// app.use([logger, authrize]);
-app.use(morgan("tiny"));
+let { people } = require("./data");
 
-app.get("/", (req, res) => {
-  res.send("Welcome to Home page!");
+app.use(express.static("./express-tutorial/04-methods-public"));
+app.use(express.urlencoded({ extended: false }));
+
+// read data
+app.get("/api/people", (req, res) => {
+  res.status(200).json({ success: true, data: people });
 });
-app.get("/about", (req, res) => {
-  res.send("Welcome to About page!");
-});
-app.get("/api/products", (req, res) => {
-  res.send("Welcome to Products page!");
+
+app.post("/login", (req, res) => {
+  // console.log(req.body);
+  const { name } = req.body;
+  if (name) {
+    return res.status(200).send(`Welcome ${name}`);
+  }
+  res.status(401).send("please provie the credentials");
 });
 
 app.listen(5000, () => {
-  console.log("Server listening on port 5000..");
+  console.log("listening on port 5000.......");
 });
