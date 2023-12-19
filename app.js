@@ -2,7 +2,9 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const logger = require("./middle-ware/logger");
-app.use('/api',logger);
+const authrize = require("./middle-ware/authrize");
+// app.use('/api',logger);
+app.use([logger, authrize]);
 
 app.get("/", (req, res) => {
   res.send("Welcome to Home page!");
